@@ -4,7 +4,12 @@ const config = require('../config');
 const { authenticate } = require('../middleware/auth');
 const { requireRole } = require('../middleware/rbac');
 const { validate } = require('../middleware/validate');
-const { loginSchema, registerSchema } = require('../middleware/schemas');
+const {
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} = require('../middleware/schemas');
 const { authLimiter } = require('../middleware/rateLimiter');
 const { createServiceProxy } = require('../proxy/proxy');
 
@@ -27,6 +32,18 @@ router.post(
   '/api/auth/register',
   authLimiter,
   validate({ body: registerSchema }),
+  userServiceProxy
+);
+router.post(
+  '/api/auth/forgot-password',
+  authLimiter,
+  validate({ body: forgotPasswordSchema }),
+  userServiceProxy
+);
+router.post(
+  '/api/auth/reset-password',
+  authLimiter,
+  validate({ body: resetPasswordSchema }),
   userServiceProxy
 );
 router.post('/api/auth/refresh', authLimiter, userServiceProxy);

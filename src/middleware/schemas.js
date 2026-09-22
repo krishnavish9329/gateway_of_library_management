@@ -17,8 +17,23 @@ const registerSchema = z.object({
   role: z.enum(['SUPER_ADMIN', 'ADMIN', 'LIBRARIAN', 'FACULTY', 'STUDENT']).optional(),
 });
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+const resetPasswordSchema = z.object({
+  token: z.string().min(32).max(128),
+  newPassword: z.string().min(8).max(100),
+});
+
 const idParamSchema = z.object({
   id: z.string().uuid(),
 });
 
-module.exports = { loginSchema, registerSchema, idParamSchema };
+module.exports = {
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  idParamSchema,
+};
